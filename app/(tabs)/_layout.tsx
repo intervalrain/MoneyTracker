@@ -1,34 +1,56 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+// app/(tabs)/_layout.tsx
 
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { Tabs } from 'expo-router';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-      }}>
+    <Tabs screenOptions={{
+      tabBarActiveTintColor: '#2563eb',
+      tabBarInactiveTintColor: '#64748b',
+    }}>
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+          title: '主頁',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="home" size={24} color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="transaction"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+          title: '記帳',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="plus-circle" size={24} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="history"
+        options={{
+          title: '記錄',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="history" size={24} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="stats"
+        options={{
+          title: '統計',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="chart-line" size={24} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: '設定',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="cog" size={24} color={color} />
           ),
         }}
       />
