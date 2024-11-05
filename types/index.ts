@@ -1,65 +1,58 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-export type TransactionType =
-  | "food"
-  | "transport"
-  | "shopping"
-  | "entertainment"
-  | "bills"
-  | "salary"
-  | "investment"
-  | "other";
-
-export const TRANSACTION_TYPES: Record<TransactionType, {
+export const TRANSACTION_TYPES: Record<string, {
   label: string;
-  icon: keyof typeof MaterialCommunityIcons.glyphMap;
-  color: string;
+  icon: string; 
+  mode: TransactionMode[];
 }> = {
   food: {
     label: '餐飲',
     icon: 'food',
-    color: '#EF4444' // red-500
+    mode: ['expense']
   },
   transport: {
     label: '交通',
     icon: 'train-car',
-    color: '#3B82F6' // blue-500
+    mode: ['expense']
   },
   shopping: {
     label: '購物',
     icon: 'shopping',
-    color: '#F59E0B' // amber-500
+    mode: ['expense']
   },
   entertainment: {
     label: '娛樂',
     icon: 'gamepad-variant',
-    color: '#10B981' // emerald-500
+    mode: ['expense']
   },
   bills: {
     label: '帳單',
     icon: 'file-document-outline',
-    color: '#6366F1' // indigo-500
+    mode: ['expense']
   },
   salary: {
     label: '薪資',
     icon: 'cash',
-    color: '#059669' // emerald-600
+    mode: ['income']
   },
   investment: {
     label: '投資',
     icon: 'chart-line',
-    color: '#7C3AED' // violet-600
+    mode: ['income', 'expense']
   },
+	transfer: {
+		label: '轉帳',
+		icon: 'transfer',
+    mode: ['transfer']
+	},
   other: {
     label: '其他',
     icon: 'dots-horizontal',
-    color: '#6B7280' // gray-500
+    mode: ['income', 'expense']
   }
 };
 
-export type AccountType = "cash" | "bank" | "credit" | "investment";
-
-export const ACCOUNT_TYPES: Record<AccountType, {
+export const ACCOUNT_TYPES: Record<string, {
   label: string;
 }> = {
   cash: {
@@ -81,8 +74,8 @@ export type TransactionMode = "expense" | "income" | "transfer";
 export interface Transaction {
   id: string;
   amount: number;
-  type: TransactionType;
-  account: AccountType;
+  type: string;
+  account: string;
   mode: TransactionMode;
   date: string;
   note?: string;
@@ -91,6 +84,6 @@ export interface Transaction {
 export interface Account {
   id: string;
   name: string;
-  type: AccountType;
+  type: string;
   balance: number;
 }

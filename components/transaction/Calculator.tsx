@@ -95,14 +95,14 @@ export function Calculator({ value, onChange, onComplete }: CalculaterProps) {
   };
 
 	return (
-		<ThemedView className="w-full bg-rain-200 px-4 mb-2">
+		<ThemedView className="w-full bg-white px-4 mb-2">
 			{buttons.map((row, i) => (
 				<View key={i} className="flex-row justify-around my-1">
 					{row.map((button) => (
 						<TouchableOpacity
 							key={button}
 							onPress={() => handlePress(button)}
-							className={`w-16 h-14 rounded-full items-center justify-center shadow-md ${
+							className={`w-16 h-14 rounded-xl items-center justify-center shadow-md ${
 								button === '=' || button === '✓'
 									? 'bg-rain-500'
 									: button === '⌫' || button === 'AC'
