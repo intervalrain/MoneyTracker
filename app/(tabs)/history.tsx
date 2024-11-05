@@ -8,6 +8,7 @@ import { useCallback, useMemo, useState } from "react";
 import { View, Text } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { startOfDay, endOfDay, startOfWeek, endOfWeek, startOfMonth, endOfMonth, startOfYear, endOfYear } from 'date-fns';
+import { TransactionEditModal } from "@/components/history/TransactionEditModal";
 
 export default function HistoryScreen() {
   const dispatch = useDispatch();
@@ -137,14 +138,14 @@ export default function HistoryScreen() {
       </View>
 
       {/* 編輯 Modal */}
-      {/* {editingRecord && (
+      {editingRecord && (
         <TransactionEditModal
           transaction={editingRecord}
           onUpdate={handleTransactionUpdate}
           onDelete={handleTransactionDelete}
           onClose={() => setEditingRecord(undefined)}
         />
-      )} */}
+      )}
     </View>
   );
 }
