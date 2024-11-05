@@ -3,7 +3,12 @@ import { useSelector } from "react-redux";
 import * as store from "@/store";
 import { Calculator } from "@/components/transaction/Calculator";
 import { useState } from "react";
-import { AccountType, TRANSACTION_TYPES, TransactionMode, TransactionType } from "@/types";
+import {
+  AccountType,
+  TRANSACTION_TYPES,
+  TransactionMode,
+  TransactionType,
+} from "@/types";
 import { TypeSelector } from "@/components/transaction/TypeSelector";
 import { AccountSelector } from "@/components/transaction/AccountSelector";
 import { HorizontalSelector } from "@/components/transaction/HorizontalSelector";
@@ -17,13 +22,18 @@ export default function TransactionScreen() {
   const [type, setType] = useState<TransactionType>("food");
   const [account, setAccount] = useState<AccountType>("cash");
 
+
+	const numbers = amount.split(/[+\-×÷]/);
+	const currentNumber = numbers[numbers.length - 1] == "" ? numbers[numbers.length - 2] : numbers[numbers.length - 1];
+  const amountToDisplay = Number(currentNumber).toLocaleString();
+
   return (
     <View className="flex-1 h-screen bg-rain-200 gap-y-2">
       {/* display */}
       <View className="flex bg-rain-200 px-4 pt-4 pb-2">
         <View className="bg-white p-6 rounded-xl items-end">
           <Text className="text-4xl font-semibold text-center">
-            ${Number(amount).toLocaleString()}
+            ${amountToDisplay}
           </Text>
         </View>
       </View>
@@ -55,7 +65,10 @@ export default function TransactionScreen() {
 
       {/* Account Selector */}
       <View className="ml-2">
-        <AccountSelector selectedAccount={account} onSelectAccount={setAccount} />
+        <AccountSelector
+          selectedAccount={account}
+          onSelectAccount={setAccount}
+        />
       </View>
       {/* Calculater */}
       <View className="flex-1 items-center justify-center">
@@ -64,24 +77,3 @@ export default function TransactionScreen() {
     </View>
   );
 }
-
-// {/* Account Selection */}
-// <ScrollView
-// 	horizontal
-// 	className="bg-white p-4 mt-2"
-// 	showsHorizontalScrollIndicator={false}
-// >
-// 	{Object.entries(ACCOUNT_TYPES).map(([key, label]) => (
-// 		<TouchableOpacity
-// 			key={key}
-// 			onPress={() => setAccount(key as AccountType)}
-// 			className={`px-4 py-2 rounded-full mx-1 ${
-// 				account === key ? 'bg-blue-500' : 'bg-gray-200'
-// 			}`}
-// 		>
-// 			<Text className={account === key ? 'text-white' : 'text-gray-600'}>
-// 				{label}
-// 			</Text>
-// 		</TouchableOpacity>
-// 	))}
-// </ScrollView>
