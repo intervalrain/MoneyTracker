@@ -1,5 +1,6 @@
 import { TouchableOpacity, View, Text } from "react-native";
 import { ThemedView } from "../ThemedView";
+import { useState } from "react";
 
 interface CalculaterProps {
   value: string;
@@ -17,6 +18,7 @@ export function Calculator({ value, onChange, onComplete }: CalculaterProps) {
   ];
 
 	const isCalculating = /[+\-×÷]/.test(value);
+	const [isComplete, setIsComplete] = useState(true);
 
 	const calculate = (expression: string): string => {
 		const expr = expression.replace(/×/g, '*').replace(/÷/g, '/');
@@ -31,6 +33,7 @@ export function Calculator({ value, onChange, onComplete }: CalculaterProps) {
     switch (key) {
 			case 'AC':
 				onChange('0');
+				setIsComplete(false);
 				break;
 
       case '⌫':
@@ -47,21 +50,23 @@ export function Calculator({ value, onChange, onComplete }: CalculaterProps) {
 				break;
 
       case '=':
-				if (!isCalculating) return;
-				const result = calculate(value);
-				onChange(result.toString());
+				if (isCalculating) {
+					const result = calculate(value);
+					setIsComplete(true);
+					onChange(result.toString());
+				} else {
+					const finalValue = parseFloat(value);
+					setIsComplete(true);
+					onChange('0');
+					onComplete?.(finalValue);
+				}
 				break;
-
-      case '✓':
-				if (!isCalculating) return;
-				const finalValue = parseFloat(value);
-				onComplete?.(finalValue);
-        break;
 
 			case '+':
 			case '-':
 			case '×':
 			case '÷':
+				setIsComplete(false);
 				if (value.slice(-1).match(/[+\-×÷]/)) {
 					onChange(value.slice(0, -1) + key);
 				} else {
@@ -73,12 +78,18 @@ export function Calculator({ value, onChange, onComplete }: CalculaterProps) {
         const numbers = value.split(/[+\-×÷]/);
 				const currentNumber = numbers[numbers.length - 1];
 				if (!currentNumber.includes('.')) {
+					setIsComplete(false);
           onChange(value + '.');
         }
         break;
 				
       default:
-        onChange(value === '0' ? key : value + key);
+				if (isComplete || value === '0') {
+					setIsComplete(false);
+          onChange(key);
+				} else {
+					onChange(value + key);
+				}
         break;
     }
   };
@@ -86,12 +97,12 @@ export function Calculator({ value, onChange, onComplete }: CalculaterProps) {
 	return (
 		<ThemedView className="w-full bg-rain-200 px-4 mb-2">
 			{buttons.map((row, i) => (
-				<View key={i} className="flex-row justify-around my-2">
+				<View key={i} className="flex-row justify-around my-1">
 					{row.map((button) => (
 						<TouchableOpacity
 							key={button}
 							onPress={() => handlePress(button)}
-							className={`w-16 h-16 rounded-3xl items-center justify-center shadow-md ${
+							className={`w-16 h-14 rounded-full items-center justify-center shadow-md ${
 								button === '=' || button === '✓'
 									? 'bg-rain-500'
 									: button === '⌫' || button === 'AC'

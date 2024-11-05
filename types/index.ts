@@ -76,7 +76,7 @@ export const ACCOUNT_TYPES: Record<AccountType, {
 	}
 };
 
-export type TransactionMode = "expense" | "income";
+export type TransactionMode = "expense" | "income" | "transfer";
 
 export interface Transaction {
   id: string;
