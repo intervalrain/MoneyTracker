@@ -87,3 +87,24 @@ export interface Account {
   type: string;
   balance: number;
 }
+
+export interface DateRange {
+  from: Date;
+  to: Date;
+}
+
+export interface TimeSeriesData {
+  date: string;
+  income: number;
+  expense: number;
+}
+
+export interface CategoryData {
+  name: string;
+  value: number;
+}
+
+export interface CategoryDataSet {
+  income: CategoryData[];
+  expense: CategoryData[];
+}

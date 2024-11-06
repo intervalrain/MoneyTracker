@@ -36,7 +36,8 @@ You can start developing by editing the files inside the **app** directory. This
 ![history](./assets/images/history.png)
 
 + Statistics page: You can see the trend chart of your income and expense
-   + ongoing
+![piechart](./assets/images/piechart.png)
+![linechart](./assets/images/linechart.png)
 
 + Settings page: You can setup your personal settings here
    + ongoing

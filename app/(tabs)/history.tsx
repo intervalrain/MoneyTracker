@@ -54,7 +54,7 @@ export default function HistoryScreen() {
     return transactions.filter(t => {
       const transactionDate = new Date(t.date);
       return transactionDate >= start && transactionDate <= end;
-    });
+    }).sort((a, b) => a.date.localeCompare(b.date));
   }, [transactions, getDateRange]);
 
   // 計算總收支
