@@ -1,4 +1,4 @@
-# Welcome to your Expo app 👋
+# Money Tracker 👋
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
@@ -25,26 +25,18 @@ In the output, you'll find options to open the app in a
 
 You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
-## Get a fresh project
+## What will you see
++ Home page: You can watch your budget here
+![home](./assets/images/home.png)
 
-When you're ready, run:
++ Transaction page: You can add your transaction here
+![transaction](./assets/images/transactions.png)
 
-```bash
-npm run reset-project
-```
++ History page: You can see all historic transactions and edit/remove your transactions here
+![history](./assets/images/history.png)
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
++ Statistics page: You can see the trend chart of your income and expense
+   + ongoing
 
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
++ Settings page: You can setup your personal settings here
+   + ongoing
