@@ -40,6 +40,7 @@ export const TransactionEditModal: React.FC<TransactionEditModalProps> = ({
   const [mode, setMode] = useState<TransactionMode>(transaction.mode);
   const [type, setType] = useState(transaction.type);
   const [account, setAccount] = useState(transaction.account);
+	const [toAccount, setToAccount] = useState(transaction.toAccount);
   const [note, setNote] = useState(transaction.note || "");
   const [date, setDate] = useState(new Date(transaction.date));
   const [showDatePicker, setShowDatePicker] = useState(false);

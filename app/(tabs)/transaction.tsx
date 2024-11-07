@@ -7,12 +7,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { addTransaction } from "@/store/transactionSlice";
 import { getUUID } from "@/utils/uuid";
 import { RootState } from "@/store";
-import { format } from "date-fns";
-import { zhTW } from "date-fns/locale";
-import { DatePickerModal } from "@/components/datePicker/DatePickerModal";
 import { BarButtons } from "@/components/BarButton";
 import { AccountPicker } from "@/components/transaction/AccountPicker";
-import { addTransactionType } from "@/store/customTypesSlice";
 import { AddTypeModal } from "@/components/AddTypeModal";
 import { IntervalDatePicker } from "@/components/datePicker/IntervalDatePicker";
 
@@ -29,26 +25,12 @@ export default function TransactionScreen() {
   const [toAccount, setToAccount] = useState("bank");
   const [comment, setComment] = useState("");
   const [date, setDate] = useState(new Date());
-  const [showDatePicker, setShowDatePicker] = useState(false);
   const [showAddTypeModal, setShowAddTypeModal] = useState(false);
-  const [showIconSelector, setShowIconSelector] = useState(false);
-  const [newTypeData, setNewTypeData] = useState<{
-    key: string;
-    label: string;
-    icon: string;
-    mode: TransactionMode[];
-  }>({
-    key: "",
-    label: "",
-    icon: "plus",
-    mode: [mode],
-  });
 
   const numbers = amount.split(/[+\-×÷]/);
-  const currentNumber =
-    numbers[numbers.length - 1] == ""
-      ? numbers[numbers.length - 2]
-      : numbers[numbers.length - 1];
+  const currentNumber = numbers[numbers.length - 1] == ""
+    ? numbers[numbers.length - 2]
+    : numbers[numbers.length - 1];
   const amountToDisplay = Number(currentNumber).toLocaleString();
 
   const handleComplete = () => {
@@ -86,7 +68,7 @@ export default function TransactionScreen() {
   return (
     <View className="flex-1 bg-rain-50">
       {/* Top Section */}
-      <View className="bg-rain-50 shadow-sm">
+      <View>
         {/* Mode Selector */}
         <BarButtons
           buttons={[

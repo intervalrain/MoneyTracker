@@ -1,6 +1,8 @@
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Transaction, TransactionMode } from "@/types";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 // TransactionItem 組件
 interface TransactionItemProps {
@@ -9,20 +11,10 @@ interface TransactionItemProps {
 }
 
 export function TransactionItem({ transaction, onPress }: TransactionItemProps) {
-  const getTypeIcon = (type: string) => {
-    switch (type) {
-      case "food":
-        return "food";
-      case "transport":
-        return "car";
-      case "shopping":
-        return "cart";
-      case "entertainment":
-        return "movie";
-      default:
-        return "cash";
-    }
-  };
+
+  const { transactionTypes, accountTypes } = useSelector(
+    (state: RootState) => state.customTypes
+  );
 
   const getModeColor = (mode: TransactionMode) => {
     switch (mode) {
@@ -42,14 +34,14 @@ export function TransactionItem({ transaction, onPress }: TransactionItemProps) 
     >
       <View className="bg-rain-100 p-2 rounded-full">
         <MaterialCommunityIcons
-          name={getTypeIcon(transaction.type)}
+          name={transactionTypes[transaction.type].icon as keyof typeof MaterialCommunityIcons.glyphMap}
           size={24}
           color="#666666"
         />
       </View>
 
       <View className="flex-1 ml-4">
-        <Text className="text-base font-medium">{transaction.type}</Text>
+        <Text className="text-base font-medium">{transactionTypes[transaction.type].label}</Text>
         {transaction.note && (
           <Text className="text-sm text-gray-500">{transaction.note}</Text>
         )}

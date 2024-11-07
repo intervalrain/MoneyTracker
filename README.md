@@ -41,3 +41,9 @@ You can start developing by editing the files inside the **app** directory. This
 
 + Settings page: You can setup your personal settings here
    + ongoing
+
+
+## To do:
++ 各種 Transaction Type 的 Budgets
++ 設定
++ 編輯時用 ✓ 取代更新 button

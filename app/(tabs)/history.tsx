@@ -3,7 +3,7 @@ import { IntervalDatePicker } from "@/components/datePicker/IntervalDatePicker";
 import { TransactionList } from "@/components/history/TransactionList";
 import { RootState } from "@/store";
 import { deleteTransaction, updateTransaction } from "@/store/transactionSlice";
-import { Transaction } from "@/types";
+import { IntervalType, Transaction } from "@/types";
 import { useCallback, useMemo, useState } from "react";
 import { View, Text } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,7 +14,7 @@ export default function HistoryScreen() {
   const dispatch = useDispatch();
   const transactions = useSelector((state: RootState) => state.transactions.transactions);
   const [editingRecord, setEditingRecord] = useState<Transaction | undefined>();
-  const [mode, setMode] = useState<"day" | "week" | "month" | "year">("month");
+  const [mode, setMode] = useState<IntervalType>("month");
   const [date, setDate] = useState(new Date());
 
   const intervalTypeButtons = [
@@ -87,9 +87,9 @@ export default function HistoryScreen() {
   }, [dispatch]);
 
   return (
-    <View className="flex-1 bg-gray-100">
+    <View className="flex-1 bg-gray-50">
       {/* 時間範圍選擇 */}
-      <View className="space-y-2">
+      <View>
         <BarButtons
           buttons={intervalTypeButtons}
           value={mode}

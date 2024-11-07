@@ -77,6 +77,7 @@ export interface Transaction {
   mode: TransactionMode;
   date: string;
   note?: string;
+  toAccount?: string;
 }
 
 export interface Account {
@@ -106,3 +107,5 @@ export interface CategoryDataSet {
   income: CategoryData[];
   expense: CategoryData[];
 }
+
+export type IntervalType = 'day' | 'week' | 'month' | 'year';
