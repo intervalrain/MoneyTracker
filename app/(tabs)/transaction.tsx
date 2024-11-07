@@ -9,9 +9,12 @@ import { getUUID } from "@/utils/uuid";
 import { RootState } from "@/store";
 import { format } from "date-fns";
 import { zhTW } from "date-fns/locale";
-import { DatePickerModal } from "@/components/DatePickerModal";
+import { DatePickerModal } from "@/components/datePicker/DatePickerModal";
 import { BarButtons } from "@/components/BarButton";
 import { AccountPicker } from "@/components/transaction/AccountPicker";
+import { addTransactionType } from "@/store/customTypesSlice";
+import { AddTypeModal } from "@/components/AddTypeModal";
+import { IntervalDatePicker } from "@/components/datePicker/IntervalDatePicker";
 
 export default function TransactionScreen() {
   const dispatch = useDispatch();
@@ -23,10 +26,23 @@ export default function TransactionScreen() {
   const [mode, setMode] = useState<TransactionMode>("expense");
   const [type, setType] = useState("food");
   const [account, setAccount] = useState("cash");
-	const [toAccount, setToAccount] = useState("bank");
+  const [toAccount, setToAccount] = useState("bank");
   const [comment, setComment] = useState("");
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showAddTypeModal, setShowAddTypeModal] = useState(false);
+  const [showIconSelector, setShowIconSelector] = useState(false);
+  const [newTypeData, setNewTypeData] = useState<{
+    key: string;
+    label: string;
+    icon: string;
+    mode: TransactionMode[];
+  }>({
+    key: "",
+    label: "",
+    icon: "plus",
+    mode: [mode],
+  });
 
   const numbers = amount.split(/[+\-×÷]/);
   const currentNumber =
@@ -57,12 +73,15 @@ export default function TransactionScreen() {
     return colors[currentMode];
   };
 
-	const filteredTransactionTypes : typeof transactionTypes = 
-	  Object.fromEntries(Object.entries(transactionTypes).filter(([_, value]) => value.mode.includes(mode)));
+  const filteredTransactionTypes: typeof transactionTypes = Object.fromEntries(
+    Object.entries(transactionTypes).filter(([_, value]) =>
+      value.mode.includes(mode)
+    )
+  );
 
-	useEffect(() => {
-		setType(Object.keys(filteredTransactionTypes)[0]);
-	}, [mode])
+  useEffect(() => {
+    setType(Object.keys(filteredTransactionTypes)[0]);
+  }, [mode]);
 
   return (
     <View className="flex-1 bg-rain-50">
@@ -72,7 +91,11 @@ export default function TransactionScreen() {
         <BarButtons
           buttons={[
             { label: "支出", value: "expense", color: getModeColor("expense") },
-            { label: "轉帳", value: "transfer", color: getModeColor("transfer") },
+            {
+              label: "轉帳",
+              value: "transfer",
+              color: getModeColor("transfer"),
+            },
             { label: "收入", value: "income", color: getModeColor("income") },
           ]}
           value={mode}
@@ -80,77 +103,99 @@ export default function TransactionScreen() {
         />
 
         {/* Info Bar - Date & Account */}
-        <View className="flex-row justify-between items-center px-4 py-2 border-b border-gray-100">
-          <Pressable
-            onPress={() => setShowDatePicker(true)}
-            className="flex-row items-center space-x-2"
-          >
-            <MaterialCommunityIcons name="calendar" size={20} color="#6B7280" />
-            <Text className="text-gray-600">
-              {format(date, "M月d日 EEEE", { locale: zhTW })}
-            </Text>
-          </Pressable>
+        <IntervalDatePicker mode={"day"} date={date} onChange={setDate} />
 
-          <AccountPicker
-            value={account}
-            onChange={setAccount}
-            options={accountTypes}
-          />
-					{mode === 'transfer' &&
-						<AccountPicker
-							value={toAccount}
-							onChange={setToAccount}
-							options={accountTypes}
-						/>}
-        </View>
-
-        {/* Amount Display */}
+        {/* Amount Display and Input Section */}
         <View className="p-6 items-center">
+
+          {/* Amount */}
           <Text className="text-6xl font-semibold">${amountToDisplay}</Text>
-          <TextInput
-            value={comment}
-            onChangeText={setComment}
-            placeholder="備註..."
-            className="mt-2 text-center text-gray-500 w-full text-lg"
-          />
+          
+          {/* Account and Note Row */}
+          <View className="flex-row items-center space-x-3">
+            <View className="flex-1">
+              <TextInput
+                value={comment}
+                onChangeText={setComment}
+                placeholder="備註..."
+                className="px-4 py-2 bg-gray-100 rounded-xl text-gray-700"
+              />
+            </View>
+
+            <View className="flex-row items-center space-x-2">
+              <AccountPicker
+                value={account}
+                onChange={setAccount}
+                options={accountTypes}
+              />
+              {mode === "transfer" && (
+                <>
+                  <MaterialCommunityIcons 
+                    name="arrow-right" 
+                    size={20} 
+                    color="#6B7280" 
+                  />
+                  <AccountPicker
+                    value={toAccount}
+                    onChange={setToAccount}
+                    options={accountTypes}
+                  />
+                </>
+              )}
+            </View>
+          </View>
+
+
         </View>
+
 
         {/* Transaction Types */}
-			
-				<ScrollView
-					horizontal
-					showsHorizontalScrollIndicator={false}
-					className="px-4 pb-4"
-					contentContainerStyle={{ paddingRight: 16 }} // 確保最後一個項目不會貼邊
-				>
-					<View className="flex-row space-x-4">
-						{Object.entries(filteredTransactionTypes).map(([key, value]) => (
-							<Pressable
-								key={key}
-								onPress={() => setType(key as string)}
-								className={`items-center px-4 py-2 rounded-xl ${
-									type === key ? `bg-rain-300 shadow-2xl border` : `bg-gray-100`
-								}`}
-								style={{ minWidth: 80 }} // 確保每個項目有最小寬度
-							>
-								<MaterialCommunityIcons
-									name={
-										value.icon as keyof typeof MaterialCommunityIcons.glyphMap
-									}
-									size={28}
-									color="black"
-								/>
-								<Text
-									className={`mt-2 ${
-										type === key ? "text-black" : "text-gray-500"
-									}`}
-								>
-									{value.label}
-								</Text>
-							</Pressable>
-						))}
-					</View>
-				</ScrollView>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          className="px-4 pb-4"
+          contentContainerStyle={{ paddingRight: 16 }} // 確保最後一個項目不會貼邊
+        >
+          <View className="flex-row space-x-4">
+            {Object.entries(filteredTransactionTypes).map(([key, value]) => (
+              <Pressable
+                key={key}
+                onPress={() => setType(key as string)}
+                className={`items-center px-4 py-2 rounded-xl ${
+                  type === key ? `bg-rain-300 shadow-2xl border` : `bg-gray-100`
+                }`}
+                style={{ minWidth: 80 }} // 確保每個項目有最小寬度
+              >
+                <MaterialCommunityIcons
+                  name={
+                    value.icon as keyof typeof MaterialCommunityIcons.glyphMap
+                  }
+                  size={28}
+                  color="black"
+                />
+                <Text
+                  className={`mt-2 ${
+                    type === key ? "text-black" : "text-gray-500"
+                  }`}
+                >
+                  {value.label}
+                </Text>
+              </Pressable>
+            ))}
+
+            {/* add new type button */}
+            {mode !== "transfer" && (
+              <Pressable
+                onPress={() => setShowAddTypeModal(true)}
+                className="items-center px-4 py-2 rounded-xl bg-gray-100"
+                style={{ minWidth: 80 }}
+              >
+                <MaterialCommunityIcons name="plus" size={28} color="#6B7280" />
+                <Text className={`mt-2 text-gray-500}`}>新增</Text>
+              </Pressable>
+            )}
+          </View>
+        </ScrollView>
       </View>
 
       {/* Bottom Section - Calculator */}
@@ -162,15 +207,11 @@ export default function TransactionScreen() {
         />
       </View>
 
-      {/* Date Picker Modal */}
-      {showDatePicker && (
-        <DatePickerModal
-          date={date}
-          onConfirm={(newDate) => {
-            setDate(newDate);
-            setShowDatePicker(false);
-          }}
-          onCancel={() => setShowDatePicker(false)}
+      {/* Add Type Modal */}
+      {showAddTypeModal && (
+        <AddTypeModal
+          onClose={() => setShowAddTypeModal(false)}
+          initialMode={mode}
         />
       )}
     </View>

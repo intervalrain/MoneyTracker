@@ -29,6 +29,7 @@ import {
 } from 'date-fns';
 import { zhTW } from 'date-fns/locale';
 import { LineChart, PieChart } from 'react-native-chart-kit';
+import { BarButtons } from '@/components/BarButton';
 
 const screenWidth = Dimensions.get('window').width;
 

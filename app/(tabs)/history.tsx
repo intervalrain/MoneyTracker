@@ -1,5 +1,5 @@
 import { BarButtons } from "@/components/BarButton";
-import { IntervalDatePicker } from "@/components/IntervalDatePicker";
+import { IntervalDatePicker } from "@/components/datePicker/IntervalDatePicker";
 import { TransactionList } from "@/components/history/TransactionList";
 import { RootState } from "@/store";
 import { deleteTransaction, updateTransaction } from "@/store/transactionSlice";

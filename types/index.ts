@@ -1,5 +1,3 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-
 export const TRANSACTION_TYPES: Record<string, {
   label: string;
   icon: string; 

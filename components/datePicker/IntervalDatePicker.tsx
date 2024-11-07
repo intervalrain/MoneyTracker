@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { format, addDays, addWeeks, addMonths, addYears, getWeek, getYear, setWeek } from 'date-fns';
+import { format, addDays, addWeeks, addMonths, addYears, getWeek, getYear, setWeek, startOfWeek, endOfWeek, startOfMonth, endOfMonth } from 'date-fns';
 import { zhTW } from 'date-fns/locale';
+import { DatePickerModal } from '@/components/datePicker/DatePickerModal';
 
 interface IntervalDatePickerProps {
   mode: "day" | "week" | "month" | "year";
@@ -15,6 +16,8 @@ export const IntervalDatePicker: React.FC<IntervalDatePickerProps> = ({
   date,
   onChange,
 }) => {
+  const [showDatePicker, setShowDatePicker] = useState(false);
+
   const handlePrevious = () => {
     switch (mode) {
       case "day":
@@ -67,6 +70,27 @@ export const IntervalDatePicker: React.FC<IntervalDatePickerProps> = ({
     }
   };
 
+  const handleDateSelect = (selectedDate: Date) => {
+    switch (mode) {
+      case "day":
+        onChange(selectedDate);
+        break;
+      case "week":
+        // 确保选择的日期是该周的开始
+        onChange(startOfWeek(selectedDate, { locale: zhTW }));
+        break;
+      case "month":
+        // 确保选择的日期是该月的开始
+        onChange(startOfMonth(selectedDate));
+        break;
+      case "year":
+        // 设置为该年的1月1日
+        onChange(new Date(selectedDate.getFullYear(), 0, 1));
+        break;
+    }
+    setShowDatePicker(false);
+  };
+
   return (
     <View className="flex-row items-center justify-between bg-white px-4 py-3">
       <Pressable
@@ -76,9 +100,14 @@ export const IntervalDatePicker: React.FC<IntervalDatePickerProps> = ({
         <MaterialCommunityIcons name="chevron-left" size={24} color="#374151" />
       </Pressable>
       
-      <Text className="text-lg font-medium text-gray-800">
-        {getDisplayText()}
-      </Text>
+      <Pressable 
+        onPress={() => setShowDatePicker(true)}
+        className="flex-1 mx-4 items-center"
+      >
+        <Text className="text-lg font-medium text-gray-800">
+          {getDisplayText()}
+        </Text>
+      </Pressable>
 
       <Pressable
         onPress={handleNext}
@@ -86,6 +115,17 @@ export const IntervalDatePicker: React.FC<IntervalDatePickerProps> = ({
       >
         <MaterialCommunityIcons name="chevron-right" size={24} color="#374151" />
       </Pressable>
+
+      {showDatePicker && (
+        <DatePickerModal
+          date={date}
+          onConfirm={handleDateSelect}
+          onCancel={() => setShowDatePicker(false)}
+          mode={mode}
+          minDate={new Date(2000, 0, 1)}
+          maxDate={new Date(2100, 11, 31)}
+        />
+      )}
     </View>
   );
 };
