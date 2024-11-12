@@ -92,7 +92,7 @@ export const IntervalDatePicker: React.FC<IntervalDatePickerProps> = ({
   };
 
   return (
-    <View className="flex-row items-center justify-between bg-white px-4 py-3">
+    <View className="flex-row items-center justify-between bg-rain-50 px-4 py-3">
       <Pressable
         onPress={handlePrevious}
         className="w-10 h-10 items-center justify-center rounded-full active:bg-gray-100"

@@ -275,12 +275,11 @@ export const TransactionEditModal: React.FC<TransactionEditModalProps> = ({
         )}
 
         {/* Add Type Modal */}
-        {showAddTypeModal && (
-          <AddTypeModal
-            onClose={() => setShowAddTypeModal(false)}
-            initialMode={mode}
-          />
-        )}
+				{showAddTypeModal &&
+					<AddTypeModal
+						onClose={() => setShowAddTypeModal(false)}
+						initialMode={mode}
+					/>}
       </View>
     </Modal>
   );

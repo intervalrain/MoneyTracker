@@ -47,3 +47,5 @@ You can start developing by editing the files inside the **app** directory. This
 + 各種 Transaction Type 的 Budgets
 + 設定
 + 編輯時用 ✓ 取代更新 button
++ 可編輯帳戶
++ 修正轉帳

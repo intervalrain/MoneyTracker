@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { TRANSACTION_TYPES, ACCOUNT_TYPES, TransactionMode } from "@/types";
+import { TRANSACTION_TYPES, ACCOUNT_TYPES, TransactionMode, TransactionType, AccountType } from "@/types";
 
 interface CustomTypesState {
-  transactionTypes: typeof TRANSACTION_TYPES;
-  accountTypes: typeof ACCOUNT_TYPES;
+  transactionTypes: Record<string, TransactionType>;
+  accountTypes: Record<string, AccountType>;
 }
 
 const initialState: CustomTypesState = {
@@ -38,6 +38,7 @@ const customTypesSlice = createSlice({
         key: string;
         value: {
           label: string;
+          initialBalance: number;
         };
       }>
     ) => {

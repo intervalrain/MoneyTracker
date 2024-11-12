@@ -43,7 +43,7 @@ export function DatePicker({
   };
 
   return (
-    <View className={`flex-row items-center justify-between bg-rain-200 rounded-lg mx-4 ${className}`}>
+    <View className={`flex-row items-center justify-between bg-rain-50 rounded-lg mx-4 ${className}`}>
       <TouchableOpacity 
         onPress={() => adjustDate(-1)} 
         className="p-2"

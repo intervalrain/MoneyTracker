@@ -183,7 +183,7 @@ export const DatePickerModal: React.FC<DatePickerModalProps> = ({
         />
 
         {/* Selected Date Display */}
-        <View className="p-4 bg-gray-50">
+        <View className="p-4 bg-rain-50">
           <Text className="text-center text-gray-600">
             已選擇：{getDisplayText()}
           </Text>

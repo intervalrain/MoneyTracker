@@ -58,12 +58,20 @@ export default function HomeScreen() {
     return "rgb(239, 68, 68)"; // red-500
   };
 
-  // 根據緊急度返回描述
-  const getEmergencyDescription = (level: number) => {
+  // 根據緊急度返回警語
+  const getEmergencyTitle = (level: number) => {
     if (level < 50) return "狀態良好";
     if (level < 75) return "需要注意";
     return "請節制支出";
   };
+
+  // 根據緊急度返回描述
+  const getEmergencyDescription = (level: number) => {
+    if (level < 50) return "您的支出控制得宜，繼續保持良好的理財習慣！";
+    if (level < 75 ) return "您的支出已超過收入的 75%，建議檢視開支並適度節制。";
+    return "支出已達收入的一半以上，建議關注支出趨勢。"
+  }
+
 
   const currentMonth = new Date().toLocaleDateString('zh-TW', { month: 'long' });
 
@@ -123,7 +131,7 @@ export default function HomeScreen() {
               style={{ backgroundColor: getEmergencyColor(emergencyLevel) }}
             />
             <Text className="text-gray-600 font-medium">
-              {getEmergencyDescription(emergencyLevel)}
+              {getEmergencyTitle(emergencyLevel)}
             </Text>
           </View>
           <Text className="text-gray-500">
@@ -134,13 +142,7 @@ export default function HomeScreen() {
         {/* 詳細說明 */}
         <View className="mt-4 p-4 bg-gray-50 rounded-xl">
           <Text className="text-sm text-gray-600">
-            {emergencyLevel >= 75 ? (
-              "您的支出已超過收入的 75%，建議檢視開支並適度節制。"
-            ) : emergencyLevel >= 50 ? (
-              "支出已達收入的一半以上，建議關注支出趨勢。"
-            ) : (
-              "您的支出控制得宜，繼續保持良好的理財習慣！"
-            )}
+            {getEmergencyDescription(emergencyLevel)}
           </Text>
         </View>
       </View>

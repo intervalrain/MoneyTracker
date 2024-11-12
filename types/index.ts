@@ -1,8 +1,15 @@
-export const TRANSACTION_TYPES: Record<string, {
+export interface TransactionType {
   label: string;
-  icon: string; 
+  icon: string;
   mode: TransactionMode[];
-}> = {
+}
+
+export interface AccountType {
+  label: string;
+  initialBalance: number;
+}
+
+export const TRANSACTION_TYPES: Record<string, TransactionType> = {
   food: {
     label: '餐飲',
     icon: 'food',
@@ -50,20 +57,14 @@ export const TRANSACTION_TYPES: Record<string, {
   }
 };
 
-export const ACCOUNT_TYPES: Record<string, {
-  label: string;
-}> = {
+export const ACCOUNT_TYPES: Record<string, AccountType> = {
   cash: {
     label: '現金',
+    initialBalance: 0
   },
   bank: {
 		label: '銀行',
-	},
-	credit: {
-		label: '信用卡'
-	},
-	investment: {
-		label: '投資'
+    initialBalance: 0
 	}
 };
 

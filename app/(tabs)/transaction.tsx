@@ -1,7 +1,7 @@
-import { View, Text, TextInput, Pressable, ScrollView } from "react-native";
+import { View, Text, TextInput, Pressable, ScrollView, Modal } from "react-native";
 import { Calculator } from "@/components/transaction/Calculator";
 import { useEffect, useState } from "react";
-import { Transaction, TransactionMode } from "@/types";
+import { AccountType, Transaction, TransactionMode } from "@/types";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
 import { addTransaction } from "@/store/transactionSlice";
@@ -46,6 +46,14 @@ export default function TransactionScreen() {
     dispatch(addTransaction(transaction));
   };
 
+  const handleAddAccount = (label: string, initialBalance: number) => {
+    const account: AccountType = {
+      label,
+      initialBalance,
+    }
+    accountTypes[getUUID()] = account;
+  }
+  
   const getModeColor = (currentMode: TransactionMode) => {
     const colors = {
       expense: mode === "expense" ? "bg-red-500" : "bg-red-100",
@@ -109,6 +117,7 @@ export default function TransactionScreen() {
                 value={account}
                 onChange={setAccount}
                 options={accountTypes}
+                onAddAccount={handleAddAccount}
               />
               {mode === "transfer" && (
                 <>
@@ -121,13 +130,12 @@ export default function TransactionScreen() {
                     value={toAccount}
                     onChange={setToAccount}
                     options={accountTypes}
+                    onAddAccount={handleAddAccount}
                   />
                 </>
               )}
             </View>
           </View>
-
-
         </View>
 
 
@@ -190,12 +198,12 @@ export default function TransactionScreen() {
       </View>
 
       {/* Add Type Modal */}
-      {showAddTypeModal && (
+      {showAddTypeModal &&  
         <AddTypeModal
           onClose={() => setShowAddTypeModal(false)}
           initialMode={mode}
         />
-      )}
+      }
     </View>
   );
 }
